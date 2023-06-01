@@ -875,8 +875,12 @@ def get_results_binning(attack_list, D, n=6):
     for i in tqdm(range(len(attack_list))):
         results_binning[i+1]['cm'] = alert_by_bin(attack_list[i], D, n)
         # print(results_binning[i+1]["cm"])
-        results_binning[i+1]['prec'] = results_binning[i+1]['cm'][1, 1] / \
-            (results_binning[i+1]['cm'][1, 1]+results_binning[i+1]['cm'][0, 1])
+        denominator = (results_binning[i+1]['cm'][1, 1]+results_binning[i+1]['cm'][0, 1])
+        if denominator != 0:
+            results_binning[i+1]['prec'] = results_binning[i+1]['cm'][1, 1] / denominator
+        else:
+            results_binning[i+1]['prec'] = 0  # or np.nan, or however you want to handle this case
+
         results_binning[i+1]['recall'] = results_binning[i+1]['cm'][1, 1] / \
             (results_binning[i+1]['cm'][1, 1]+results_binning[i+1]['cm'][1, 0])
         results_binning[i+1]['false_pos'] = results_binning[i+1]['cm'][0, 1] / \
@@ -896,9 +900,9 @@ def get_results_binning(attack_list, D, n=6):
         (results_binning['total']['cm'][0, 1] +
          results_binning['total']['cm'][0, 0])
 
-    # return results_binning
+    return results_binning
 
-    picklify(results_binning, "/home/jbc0071/Documents/can-time-based-ids-benchmark/code/pickles/results_binning_final.pkl")
+    # picklify(results_binning, "/home/jbc0071/Documents/can-time-based-ids-benchmark/code/pickles/results_binning_final.pkl")
 
 
 def get_results_binning_various_p(attack_list, D, n=6):
