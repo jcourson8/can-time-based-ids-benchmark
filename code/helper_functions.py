@@ -898,8 +898,7 @@ def get_results_binning(attack_list, D, n=6):
 
     # return results_binning
 
-    picklify(results_binning, os.path.dirname(
-        os.getcwd()) + "/results_binning_final.pkl")
+    picklify(results_binning, "/home/jbc0071/Documents/can-time-based-ids-benchmark/code/pickles/results_binning_final.pkl")
 
 
 def get_results_binning_various_p(attack_list, D, n=6):
